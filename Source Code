@@ -1,0 +1,41 @@
+# Task 1: IRIS Flower 
+
+import pandas as pd, numpy as np, matplotlib.pyplot as plt, seaborn as sns
+
+df = pd.read_csv(r'C:\Users\HP\OneDrive\Documents\LGM-VIP\Task-1\Iris.csv')
+df.head()
+
+# removing the unnecessary column 'Id'
+df.drop('Id', axis = 1, inplace = True)
+
+df.info()
+
+df['Species'].value_counts()
+
+df.isnull().value_counts()
+
+sns.pairplot(df, hue='Species')
+plt.show()
+
+corr = df.corr()
+sns.heatmap(corr, annot = True)
+
+x = df.drop(columns = 'Species')
+y = df['Species']
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size = 0.30, random_state = False)
+
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+model.fit(x_train, y_train)
+
+accuracy = model.score(x_test, y_test)
+print(accuracy*100)
+
+predictions = model.predict(x_test)
+predictions
+
+from sklearn.metrics import accuracy_score
+accuracy_score(y_test, predictions)
